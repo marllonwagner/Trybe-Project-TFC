@@ -1,5 +1,9 @@
 import * as express from 'express';
 
+import TeamsRouter from './routers/teams.router';
+import TeamsController from './teams/teams.controller';
+import TeamsService from './teams/teams.service';
+
 class App {
   public app: express.Express;
 
@@ -9,7 +13,7 @@ class App {
     this.config();
 
     // Não remover essa rota
-    this.app.get('/', (req, res) => res.json({ ok: true }));
+    this.app.get('/', (_req, res) => res.json({ ok: true }));
   }
 
   private config():void {
@@ -22,6 +26,12 @@ class App {
 
     this.app.use(express.json());
     this.app.use(accessControl);
+
+    const teamsService = new TeamsService();
+    const teamsController = new TeamsController(teamsService);
+    const teamsRouter = new TeamsRouter(express.Router(), teamsController);
+
+    this.app.use('/teams', teamsRouter.router);
   }
 
   public start(PORT: string | number):void {
