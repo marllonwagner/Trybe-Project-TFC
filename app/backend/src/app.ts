@@ -3,6 +3,7 @@ import * as express from 'express';
 import TeamsRouter from './routers/teams.router';
 import TeamsController from './teams/teams.controller';
 import TeamsService from './teams/teams.service';
+import LoginRouter from './routers/login.router';
 
 class App {
   public app: express.Express;
@@ -32,6 +33,7 @@ class App {
     const teamsRouter = new TeamsRouter(express.Router(), teamsController);
 
     this.app.use('/teams', teamsRouter.router);
+    this.app.use('/login', LoginRouter);
   }
 
   public start(PORT: string | number):void {
