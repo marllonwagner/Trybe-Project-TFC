@@ -25,6 +25,14 @@ class MatchesController {
       .matchesService.updateMatch(authorization, id, homeTeamGoals, awayTeamGoals);
     res.status(statusCode).json(response);
   }
+
+  async createMatch(req:Request, res:Response) {
+    const { authorization } = req.headers;
+    const matchInfo = req.body;
+    const { statusCode, response } = await this
+      .matchesService.createMatch(authorization, matchInfo);
+    res.status(statusCode).json(response);
+  }
 }
 
 export default MatchesController;
