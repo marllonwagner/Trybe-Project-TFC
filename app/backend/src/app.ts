@@ -4,6 +4,7 @@ import TeamsRouter from './routers/teams.router';
 import TeamsController from './teams/teams.controller';
 import TeamsService from './teams/teams.service';
 import LoginRouter from './routers/login.router';
+// import isLoginValid from './middlewares/loginValidations';
 
 class App {
   public app: express.Express;
