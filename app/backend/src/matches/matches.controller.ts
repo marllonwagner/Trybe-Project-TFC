@@ -27,10 +27,9 @@ class MatchesController {
   }
 
   async createMatch(req:Request, res:Response) {
-    const { authorization } = req.headers;
     const matchInfo = req.body;
     const { statusCode, response } = await this
-      .matchesService.createMatch(authorization, matchInfo);
+      .matchesService.createMatch(matchInfo);
     res.status(statusCode).json(response);
   }
 }

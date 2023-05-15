@@ -1,7 +1,5 @@
 import Teams from '../database/models/Teams';
 import Matches from '../database/models/Matches';
-import { validateToken } from '../auth/Jwt';
-import Users from '../database/models/Users';
 import TeamsService from '../teams/teams.service';
 
 class MatchesService {
@@ -27,14 +25,6 @@ class MatchesService {
   };
 
   public readonly finishMatch = async (authorization:any, id:any) => {
-    if (!authorization) {
-      return { statusCode: 401, response: { message: 'Token not found' } };
-    }
-    const token = await validateToken(authorization);
-    const isValid = token && await Users.findOne({ where: { email: token.email } });
-    if (isValid === null) {
-      return { statusCode: 401, response: { message: 'Token must be a valid token' } };
-    }
     await Matches.update(
       { inProgress: false },
       { where: { id } },
@@ -48,12 +38,6 @@ class MatchesService {
     homeTeamGoals:any,
     awayTeamGoals:any,
   ) => {
-    if (!authorization) { return { statusCode: 401, response: { message: 'Token not found' } }; }
-    const token = await validateToken(authorization);
-    const isValid = token && await Users.findOne({ where: { email: token.email } });
-    if (isValid === null) {
-      return { statusCode: 401, response: { message: 'Token must be a valid token' } };
-    }
     await Matches.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
     return { statusCode: 200,
       response: {
@@ -62,17 +46,11 @@ class MatchesService {
       } };
   };
 
-  public readonly createMatch = async (authorization:any, matchInfo:any) => {
-    // if (!authorization) { return { statusCode: 401, response: { message: 'Token not found' } }; }
-    // const token = await validateToken(authorization);
-    // const isValid = token && await Users.findOne({ where: { email: token.email } });
-    // if (isValid === null) {
-    //   return { statusCode: 401, response: { message: 'Token must be a valid token' } };
-    // }
+  public readonly createMatch = async (matchInfo:any) => {
     const teamExists = await this.teamService.getTeamById(matchInfo.homeTeamId);
-
     if (matchInfo.homeTeamId === matchInfo.awayTeamId) {
-      return { statusCode: 422, response: { message: 'It is not possible to create a match with two equal teams' } };
+      return { statusCode: 422,
+        response: { message: 'It is not possible to create a match with two equal teams' } };
     }
     const newMatch = await Matches.create({ ...matchInfo, inProgress: true });
     if (teamExists.response === null) {
