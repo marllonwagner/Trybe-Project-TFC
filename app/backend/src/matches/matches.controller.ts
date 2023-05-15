@@ -5,7 +5,9 @@ class MatchesController {
   private matchesService = new MatchesService();
 
   async getAllMatches(req:Request, res:Response) {
-    const { statusCode, response } = await this.matchesService.getAllMatches();
+    const { inProgress } = req.query;
+    console.log(inProgress);
+    const { statusCode, response } = await this.matchesService.getAllMatches(inProgress);
     res.status(statusCode).json(response);
   }
 }
