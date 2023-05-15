@@ -16,6 +16,15 @@ class MatchesController {
     const { statusCode, response } = await this.matchesService.finishMatch(authorization, id);
     res.status(statusCode).json(response);
   }
+
+  async updateMatch(req:Request, res:Response) {
+    const { id } = req.params;
+    const { authorization } = req.headers;
+    const { homeTeamGoals, awayTeamGoals } = req.body;
+    const { statusCode, response } = await this
+      .matchesService.updateMatch(authorization, id, homeTeamGoals, awayTeamGoals);
+    res.status(statusCode).json(response);
+  }
 }
 
 export default MatchesController;

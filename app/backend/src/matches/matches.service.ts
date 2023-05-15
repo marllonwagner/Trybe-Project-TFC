@@ -39,6 +39,26 @@ class MatchesService {
     );
     return { statusCode: 200, response: { message: 'Finished' } };
   };
+
+  public readonly updateMatch = async (
+    authorization:any,
+    id:any,
+    homeTeamGoals:any,
+    awayTeamGoals:any,
+  ) => {
+    if (!authorization) { return { statusCode: 401, response: { message: 'Token not found' } }; }
+    const token = await validateToken(authorization);
+    const isValid = token && await Users.findOne({ where: { email: token.email } });
+    if (isValid === null) {
+      return { statusCode: 401, response: { message: 'Token must be a valid token' } };
+    }
+    await Matches.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
+    return { statusCode: 200,
+      response: {
+        homeTeamGoals,
+        awayTeamGoals,
+      } };
+  };
 }
 
 export default MatchesService;
