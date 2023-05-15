@@ -18,11 +18,11 @@ class LoginService {
       return { statusCode: 401, response: { message: 'Token not found' } };
     }
     const token = await validateToken(authorization);
-    if (token === null) {
+    const login = token && await Users.findOne({ where: { email: token.email } });
+    if (login === null) {
       return { statusCode: 401, response: { message: 'Token must be a valid token' } };
     }
-    const login = token && await Users.findOne({ where: { email: token.email } });
-    return { statusCode: 200, response: { role: login } };
+    return { statusCode: 200, response: { role: login.role } };
   };
 }
 
