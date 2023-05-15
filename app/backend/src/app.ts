@@ -4,6 +4,7 @@ import TeamsRouter from './routers/teams.router';
 import TeamsController from './teams/teams.controller';
 import TeamsService from './teams/teams.service';
 import LoginRouter from './routers/login.router';
+import MatchesRouter from './routers/matches.router';
 // import isLoginValid from './middlewares/loginValidations';
 
 class App {
@@ -35,6 +36,7 @@ class App {
 
     this.app.use('/teams', teamsRouter.router);
     this.app.use('/login', LoginRouter);
+    this.app.use('/matches', MatchesRouter);
   }
 
   public start(PORT: string | number):void {
