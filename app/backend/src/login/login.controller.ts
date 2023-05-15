@@ -9,6 +9,12 @@ class LoginController {
     const { statusCode, response } = await this.loginService.postLogin(email, password);
     res.status(statusCode).json(response);
   }
+
+  async getLoginRole(req:Request, res:Response) {
+    const { authorization } = req.headers;
+    const { statusCode, response } = await this.loginService.getLoginRole(authorization);
+    res.status(statusCode).json(response);
+  }
 }
 
 export default LoginController;

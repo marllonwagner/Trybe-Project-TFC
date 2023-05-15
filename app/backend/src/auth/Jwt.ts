@@ -11,4 +11,13 @@ const genToken = (infosObj:InfosObject) => {
   return token;
 };
 
-export default genToken;
+const validateToken = async (token: string) => {
+  try {
+    const verifiedToken = jwt.verify(token, JWT_SECRET);
+    return verifiedToken as jwt.JwtPayload;
+  } catch (error) {
+    return null;
+  }
+};
+
+export { genToken, validateToken };
