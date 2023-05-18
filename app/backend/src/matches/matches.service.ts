@@ -24,7 +24,7 @@ class MatchesService {
     return { statusCode: 200, response: allMatches };
   };
 
-  public readonly finishMatch = async (authorization:any, id:any) => {
+  public readonly finishMatch = async (authorizarion: any, id:any) => {
     await Matches.update(
       { inProgress: false },
       { where: { id } },
@@ -65,6 +65,11 @@ class MatchesService {
         awayTeamGoals: newMatch.awayTeamGoals,
         inProgress: newMatch.inProgress,
       } };
+  };
+
+  public readonly allMatchesFinished = async (id:number, homeOrAway: string) => {
+    const matches = await Matches.findAll({ where: { inProgress: false } });
+    return matches.filter((e:any) => e[homeOrAway] === id);
   };
 }
 
