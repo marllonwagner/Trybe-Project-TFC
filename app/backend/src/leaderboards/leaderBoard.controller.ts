@@ -13,6 +13,11 @@ class LeaderBoardController {
     const { statusCode, response } = await this.leaderBoardService.getTeamsResults('awayTeamId');
     return res.status(statusCode).json(response);
   }
+
+  async getTeamsResults(req:Request, res: Response) {
+    const { statusCode, response } = await this.leaderBoardService.getGeneralResult();
+    return res.status(statusCode).json(response);
+  }
 }
 
 export default LeaderBoardController;
